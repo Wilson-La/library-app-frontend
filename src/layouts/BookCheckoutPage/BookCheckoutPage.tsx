@@ -126,7 +126,7 @@ export const BookCheckoutPage = () => {
           },
         };
         const userReview = await fetch(url, requestOptions);
-        if (userReview.ok) {
+        if (!userReview.ok) {
           throw new Error('Something went wrong!');
         }
         const userReviewResponseJson = await userReview.json();
@@ -261,6 +261,7 @@ export const BookCheckoutPage = () => {
             isAuthenticated={authState?.isAuthenticated}
             isCheckedOut={isCheckedOut}
             checkoutBook={checkoutBook}
+            isReviewLeft={isReviewLeft}
           />
         </div>
         <hr />
@@ -294,6 +295,7 @@ export const BookCheckoutPage = () => {
           isAuthenticated={authState?.isAuthenticated}
           isCheckedOut={isCheckedOut}
           checkoutBook={checkoutBook}
+          isReviewLeft={isReviewLeft}
         />
         <hr />
         <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
