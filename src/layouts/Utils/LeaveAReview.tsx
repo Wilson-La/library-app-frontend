@@ -3,9 +3,12 @@ import { StarsReview } from './StarsReview';
 
 export const LeaveAReview: React.FC<{}> = (props) => {
   const [starInput, setStarInput] = useState(0);
+  const [displayInput, setDisplayInput] = useState(false);
+  const [reviewDescription, setReviewDescription] = useState('');
 
   function starValue(value: number) {
     setStarInput(value);
+    setDisplayInput(true);
   }
 
   return (
@@ -79,6 +82,28 @@ export const LeaveAReview: React.FC<{}> = (props) => {
         </li>
       </ul>
       <StarsReview rating={starInput} size={32} />
+
+      {displayInput && (
+        <form method='POST' action='#'>
+          <hr />
+
+          <div className='mb-3'>
+            <label className='form-label'>Description</label>
+            <textarea
+              className='form-control'
+              id='submitReviewDescription'
+              placeholder='Optional'
+              rows={3}
+              onChange={(e) => setReviewDescription(e.target.value)}
+            ></textarea>
+          </div>
+          <div>
+            <button type='button' className='btn btn-primary mt-3'>
+              Submit Review
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };
