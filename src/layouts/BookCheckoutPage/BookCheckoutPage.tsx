@@ -1,12 +1,12 @@
-import { useOktaAuth } from '@okta/okta-react';
 import { useEffect, useState } from 'react';
 import BookModel from '../../models/BookModel';
 import ReviewModel from '../../models/ReviewModel';
-import ReviewRequestModel from '../../models/ReviewRequestModel';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { StarsReview } from '../Utils/StarsReview';
 import { CheckoutAndReviewBox } from './CheckoutAndReviewBox';
 import { LatestReviews } from './LatestReviews';
+import { useOktaAuth } from '@okta/okta-react';
+import ReviewRequestModel from '../../models/ReviewRequestModel';
 
 export const BookCheckoutPage = () => {
   const { authState } = useOktaAuth();
@@ -20,7 +20,6 @@ export const BookCheckoutPage = () => {
   const [totalStars, setTotalStars] = useState(0);
   const [isLoadingReview, setIsLoadingReview] = useState(true);
 
-  // Review state for user review
   const [isReviewLeft, setIsReviewLeft] = useState(false);
   const [isLoadingUserReview, setIsLoadingUserReview] = useState(true);
 
@@ -29,7 +28,7 @@ export const BookCheckoutPage = () => {
   const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] =
     useState(true);
 
-  // Is Book Checked Out?
+  // Is Book Check Out?
   const [isCheckedOut, setIsCheckedOut] = useState(false);
   const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
 
@@ -114,7 +113,6 @@ export const BookCheckoutPage = () => {
     });
   }, [isReviewLeft]);
 
-  //useEffect for user review
   useEffect(() => {
     const fetchUserReviewBook = async () => {
       if (authState && authState.isAuthenticated) {
@@ -128,7 +126,7 @@ export const BookCheckoutPage = () => {
         };
         const userReview = await fetch(url, requestOptions);
         if (!userReview.ok) {
-          throw new Error('Something went wrong!');
+          throw new Error('Something went wrong');
         }
         const userReviewResponseJson = await userReview.json();
         setIsReviewLeft(userReviewResponseJson);
@@ -141,7 +139,6 @@ export const BookCheckoutPage = () => {
     });
   }, [authState]);
 
-  //useEffect for is book checked out?
   useEffect(() => {
     const fetchUserCurrentLoansCount = async () => {
       if (authState && authState.isAuthenticated) {
@@ -236,6 +233,7 @@ export const BookCheckoutPage = () => {
     if (book?.id) {
       bookId = book.id;
     }
+
     const reviewRequestModel = new ReviewRequestModel(
       starInput,
       bookId,
@@ -296,7 +294,7 @@ export const BookCheckoutPage = () => {
         <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
       </div>
       <div className='container d-lg-none mt-5'>
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center alighn-items-center'>
           {book?.img ? (
             <img src={book?.img} width='226' height='349' alt='Book' />
           ) : (
@@ -327,7 +325,7 @@ export const BookCheckoutPage = () => {
           submitReview={submitReview}
         />
         <hr />
-        <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
+        <LatestReviews reviews={reviews} bookId={book?.id} mobile={true} />
       </div>
     </div>
   );

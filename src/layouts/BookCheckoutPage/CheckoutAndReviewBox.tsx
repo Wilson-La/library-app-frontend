@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import BookModel from '../../models/BookModel';
 import { LeaveAReview } from '../Utils/LeaveAReview';
@@ -43,15 +42,22 @@ export const CheckoutAndReviewBox: React.FC<{
 
   function reviewRender() {
     if (props.isAuthenticated && !props.isReviewLeft) {
-      return <LeaveAReview submitReview={props.submitReview} />;
+      return (
+        <p>
+          <LeaveAReview submitReview={props.submitReview} />
+        </p>
+      );
     } else if (props.isAuthenticated && props.isReviewLeft) {
-      return <p>Thank you for your review!</p>;
+      return (
+        <p>
+          <b>Thank you for your review!</b>
+        </p>
+      );
     }
     return (
       <div>
-        <hr>
-          <p>Sign in to be able to leave a review.</p>
-        </hr>
+        <hr />
+        <p>Sign in to be able to leave a review.</p>
       </div>
     );
   }
