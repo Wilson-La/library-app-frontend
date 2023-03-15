@@ -1,3 +1,4 @@
+import { HistoryPage } from '../HistoryPage/HistoryPage';
 import { Loans } from './components/Loans';
 
 export const ShelfPage = () => {
@@ -45,9 +46,9 @@ export const ShelfPage = () => {
             className='tab-pane fade'
             id='nav-history'
             role='tabpanel'
-            aria-labbeledby='nav-history-tab'
+            aria-labelledby='nav-history-tab'
           >
-            <p>Checkout History</p>
+            <HistoryPage />
           </div>
         </div>
       </div>
