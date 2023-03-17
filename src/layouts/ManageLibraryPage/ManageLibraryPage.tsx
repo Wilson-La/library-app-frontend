@@ -1,6 +1,7 @@
 import { useOktaAuth } from '@okta/okta-react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
+import { AdminMessages } from './components/AdminMessages';
 
 export const ManageLibraryPage = () => {
   const { authState } = useOktaAuth();
@@ -99,7 +100,7 @@ export const ManageLibraryPage = () => {
             role='tabpanel'
             aria-labelledby='nav-messages-tab'
           >
-            {messagesClick ? <>Admin Messages</> : <></>}
+            {messagesClick ? <AdminMessages /> : <></>}
           </div>
         </div>
       </div>
