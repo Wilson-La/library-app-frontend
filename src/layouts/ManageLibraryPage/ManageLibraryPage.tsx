@@ -72,7 +72,7 @@ export const ManageLibraryPage = () => {
               aria-controls='nav-messages'
               aria-selected='false'
             >
-              Add new book
+              Messages
             </button>
           </div>
         </nav>
