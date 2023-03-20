@@ -1,5 +1,6 @@
 import { useOktaAuth } from '@okta/okta-react';
 import { useEffect, useState } from 'react';
+import AdminMessageRequest from '../../../models/AdminMessageRequest';
 import MessageModel from '../../../models/MessageModel';
 import { Pagination } from '../../Utils/Pagination';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
@@ -19,6 +20,9 @@ export const AdminMessages = () => {
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
+  // Recall useEffect
+  const [btnSubmit, setBtnSubmit] = useState(false);
 
   useEffect(() => {
     const fetchUserMessages = async () => {
@@ -49,7 +53,7 @@ export const AdminMessages = () => {
       setHttpError(error.message);
     });
     window.scrollTo(0, 0);
-  }, [authState, currentPage]);
+  }, [authState, currentPage, btnSubmit]);
 
   if (isLoadingMessages) {
     return <SpinnerLoading />;
@@ -65,13 +69,43 @@ export const AdminMessages = () => {
     );
   }
 
+  async function submitResponseToQuestion(id: number, response: string) {
+    const url = `http://localhost:8080/api/messages/secure/admin/message`;
+    if (
+      authState &&
+      authState?.isAuthenticated &&
+      id !== null &&
+      response !== ''
+    ) {
+      const messageAdminRequestModel: AdminMessageRequest =
+        new AdminMessageRequest(id, response);
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(messageAdminRequestModel),
+      };
+      const messageAdminRequestModelResponse = await fetch(url, requestOptions);
+      if (!messageAdminRequestModelResponse.ok) {
+        throw new Error('Something went wrong!');
+      }
+      setBtnSubmit(!btnSubmit);
+    }
+  }
+
   return (
     <div className='mt-3'>
       {messages.length > 0 ? (
         <>
           <h5>Pending Q/A</h5>
           {messages.map((message) => (
-            <AdminMessage message={message} key={message.id} />
+            <AdminMessage
+              message={message}
+              key={message.id}
+              submitResponseToQuestion={submitResponseToQuestion}
+            />
           ))}
         </>
       ) : (
